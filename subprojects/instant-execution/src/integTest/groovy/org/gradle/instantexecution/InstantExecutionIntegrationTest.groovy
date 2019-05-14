@@ -104,6 +104,28 @@ class InstantExecutionIntegrationTest extends AbstractIntegrationSpec {
         result.assertTasksExecuted(":a")
     }
 
+    def "refresh-dependencies disables instant execution"() {
+        given:
+        buildFile << """
+            println("classic")
+        """
+
+        when:
+        instantRun "help"
+
+        and:
+        instantRun "help"
+
+        then:
+        result.assertNotOutput("classic")
+
+        when:
+        instantRun "help", "--refresh-dependencies"
+
+        then:
+        result.assertOutputContains("classic")
+    }
+
     def "instant execution for compileJava on Java project with no dependencies"() {
         given:
         buildFile << """
