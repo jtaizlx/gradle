@@ -113,8 +113,9 @@ class InstantExecutionHost internal constructor(
     private
     val startParameter = gradle.startParameter
 
-    override val requestedTaskNames = startParameter.taskNames
-    override val rootDir = startParameter.currentDir
+    override val requestedTaskNames: List<String> = startParameter.taskNames
+
+    override val rootDir: File = startParameter.currentDir
 
     inner class DefaultClassicModeBuild : ClassicModeBuild {
         override val scheduledTasks: List<Task>
