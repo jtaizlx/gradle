@@ -117,13 +117,13 @@ class InstantExecutionIntegrationTest extends AbstractIntegrationSpec {
         instantRun "help"
 
         then:
-        result.assertNotOutput("classic")
+        outputDoesNotContain("classic")
 
         when:
         instantRun "help", "--refresh-dependencies"
 
         then:
-        result.assertOutputContains("classic")
+        outputContains("classic")
     }
 
     def "instant execution for compileJava on Java project with no dependencies"() {
