@@ -104,7 +104,7 @@ class InstantExecutionIntegrationTest extends AbstractIntegrationSpec {
         result.assertTasksExecuted(":a")
     }
 
-    def "refresh-dependencies disables instant execution"() {
+    def "can invalidate instant execution cache from the command line with --refresh-dependencies"() {
         given:
         buildFile << """
             println("classic")
