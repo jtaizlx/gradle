@@ -86,7 +86,7 @@ class DefaultInstantExecution(
             false -> false
             true -> when {
                 host.isInvalidateCache -> {
-                    logger.lifecycle("Calculating task graph as instant execution cache invalidation was required")
+                    logger.lifecycle("Calculating task graph as instant execution cache invalidation was requested")
                     false
                 }
                 !instantExecutionStateFile.isFile -> {
