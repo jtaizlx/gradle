@@ -1782,6 +1782,10 @@ public class AsmBackedClassGeneratorTest {
         ConfigurableFileCollection getProp();
     }
 
+    public interface InterfaceNestedBean {
+        InterfaceFileCollectionBean getProp();
+    }
+
     public interface InterfacePropertyBean {
         Property<String> getProp();
     }
