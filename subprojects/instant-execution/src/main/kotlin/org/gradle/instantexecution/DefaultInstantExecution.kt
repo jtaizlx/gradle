@@ -82,21 +82,18 @@ class DefaultInstantExecution(
     }
 
     override fun canExecuteInstantaneously(): Boolean =
-        when (isInstantExecutionEnabled) {
-            false -> false
-            true -> when {
-                host.isSkipLoadingState -> {
-                    logger.lifecycle("Calculating task graph as skipping instant execution cache was requested")
-                    false
-                }
-                !instantExecutionStateFile.isFile -> {
-                    logger.lifecycle("Calculating task graph as no instant execution cache is available for tasks: ${host.requestedTaskNames.joinToString(" ")}")
-                    false
-                }
-                else -> {
-                    logger.lifecycle("Reusing instant execution cache. This is not guaranteed to work in any way.")
-                    true
-                }
+        isInstantExecutionEnabled && when {
+            host.isSkipLoadingState -> {
+                logger.lifecycle("Calculating task graph as skipping instant execution cache was requested")
+                false
+            }
+            !instantExecutionStateFile.isFile -> {
+                logger.lifecycle("Calculating task graph as no instant execution cache is available for tasks: ${host.requestedTaskNames.joinToString(" ")}")
+                false
+            }
+            else -> {
+                logger.lifecycle("Reusing instant execution cache. This is not guaranteed to work in any way.")
+                true
             }
         }
 
