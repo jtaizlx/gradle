@@ -55,7 +55,7 @@ class DefaultInstantExecution(
 
     interface Host {
 
-        val isInvalidateCache: Boolean
+        val isSkipLoadingState: Boolean
 
         val currentBuild: ClassicModeBuild
 
@@ -85,8 +85,8 @@ class DefaultInstantExecution(
         when (isInstantExecutionEnabled) {
             false -> false
             true -> when {
-                host.isInvalidateCache -> {
-                    logger.lifecycle("Calculating task graph as instant execution cache invalidation was requested")
+                host.isSkipLoadingState -> {
+                    logger.lifecycle("Calculating task graph as skipping instant execution cache was requested")
                     false
                 }
                 !instantExecutionStateFile.isFile -> {
