@@ -171,8 +171,9 @@ public class SourceFoldersCreator {
     }
 
     private void addScopeAttributes(SourceFolder folder, SourceSet sourceSet, Multimap<SourceSet, SourceSet> sourceSetUsages) {
-        folder.getEntryAttributes().put(EclipsePluginConstants.GRADLE_SCOPE_ATTRIBUTE_NAME, sanitizeNameForAttribute(sourceSet));
-        folder.getEntryAttributes().put(EclipsePluginConstants.GRADLE_USED_BY_SCOPE_ATTRIBUTE_NAME, Joiner.on(',').join(getUsingSourceSetNames(sourceSet, sourceSetUsages)));
+        if (folder.getPath().toLowerCase().contains("test")) {
+            folder.getEntryAttributes().put("test", "true");
+        }
     }
 
     private List<String> getUsingSourceSetNames(SourceSet sourceSet, Multimap<SourceSet, SourceSet> sourceSetUsages) {
