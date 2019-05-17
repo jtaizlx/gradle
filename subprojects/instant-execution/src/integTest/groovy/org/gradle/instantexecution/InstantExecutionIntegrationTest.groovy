@@ -17,7 +17,6 @@
 package org.gradle.instantexecution
 
 import org.gradle.initialization.LoadProjectsBuildOperationType
-import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.BuildOperationsFixture
 import org.gradle.test.fixtures.archive.ZipTestFixture
 import org.gradle.test.fixtures.file.TestFile
@@ -25,7 +24,7 @@ import org.gradle.test.fixtures.server.http.BlockingHttpServer
 import org.junit.Rule
 import spock.lang.Ignore
 
-class InstantExecutionIntegrationTest extends AbstractIntegrationSpec {
+class InstantExecutionIntegrationTest extends AbstractInstantExecutionIntegrationTest {
 
     def setup() {
         executer.noDeprecationChecks()
@@ -102,28 +101,6 @@ class InstantExecutionIntegrationTest extends AbstractIntegrationSpec {
         then:
         outputDoesNotContain("running build script")
         result.assertTasksExecuted(":a")
-    }
-
-    def "can invalidate instant execution cache from the command line with --refresh-dependencies"() {
-        given:
-        buildFile << """
-            println("classic")
-        """
-
-        when:
-        instantRun "help"
-
-        and:
-        instantRun "help"
-
-        then:
-        outputDoesNotContain("classic")
-
-        when:
-        instantRun "help", "--refresh-dependencies"
-
-        then:
-        outputContains("classic")
     }
 
     def "instant execution for compileJava on Java project with no dependencies"() {
@@ -326,11 +303,4 @@ class InstantExecutionIntegrationTest extends AbstractIntegrationSpec {
         then:
         new ZipTestFixture(file("b/build/libs/b.jar")).assertContainsFile("b/B.class")
     }
-
-    private void instantRun(String... args) {
-        run(INSTANT_EXECUTION_PROPERTY, *args)
-    }
-
-    private static final String INSTANT_EXECUTION_PROPERTY = "-Dorg.gradle.unsafe.instant-execution"
-
 }
